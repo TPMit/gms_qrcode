@@ -301,7 +301,7 @@ class _AbsenScreenState extends State<AbsenScreen> implements AbsenState {
                                                             DropdownSelectAbsensi(
                                                                 hasilQr: _absenModel.hasilQr,
                                                                 idUser: idUser,
-                                                                latitudeLongitude: _absenModel.latitude.toString() + ', ' + _absenModel.longitude.toString(),
+                                                                latitudeLongitude: _absenModel.latitude.toString() + ',' + _absenModel.longitude.toString(),
                                                                 )));
                                           },
                                           color: Colors.green,

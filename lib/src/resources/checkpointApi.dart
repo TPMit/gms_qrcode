@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show Client;
 
 import '../response/checkpointAll_response.dart';
+import '../response/checkpointParent_response.dart';
 import '../response/checkpointTagResponse.dart';
 
 class ListCheckPointService {
@@ -20,6 +21,19 @@ class ListCheckPointService {
       CheckpointAllResponse checkpointAllResponse =
           CheckpointAllResponse.fromJson(json.decode(response.body));
       return checkpointAllResponse;
+    } else {
+      return Future.error("Yah, Internet Kamu error!");
+    }
+  }
+
+  Future<CheckpointParentResponse> getDataCheckPointParent() async {
+    final response = await _client
+        .get(Uri.parse("https://gmsnv.mindotek.com/rest/listcheckpointparent/"));
+    print(response.body);
+    if (response.statusCode == 200) {
+      CheckpointParentResponse checkpointParentResponse =
+          CheckpointParentResponse.fromJson(json.decode(response.body));
+      return checkpointParentResponse;
     } else {
       return Future.error("Yah, Internet Kamu error!");
     }
@@ -65,14 +79,15 @@ class ListCheckPointService {
   }
 
   static Future postCheckPoint(
-     String idCheck, String tagId, int isKondusif, String desc) async {
+     String idCheck, String tagId, int isKondusif, String desc, String lokasi) async {
     final response = await http.post(
         Uri.parse('https://gmsnv.mindotek.com/Rest/checkpointbyqr'),
         body: {
           'idCheck':idCheck,
           'tagid_user': tagId,
           'isclear': isKondusif.toString(),
-          'note': desc
+          'note': desc,
+          'lokasi': lokasi,
         });
         print(response.body);
     if (response.statusCode == 200) {

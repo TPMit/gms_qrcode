@@ -3,31 +3,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gms_mobile/screen/fragment/activity/dialogactivitydetail.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 
-import '../src/model/patrol_model.dart';
-import '../src/presenter/patrol_presenter.dart';
-import '../src/state/patrol_state.dart';
-import 'fragment/component/app_color.dart';
-import 'fragment/component/roundedbutton.dart';
-import 'fragment/loading.dart';
+import '../activity/dialog_patrol_detail.dart';
+import '/../src/model/patrol_model.dart';
+import '/../src/presenter/patrol_presenter.dart';
+import '/../src/state/patrol_state.dart';
+import '../component/app_color.dart';
+import '../component/roundedbutton.dart';
+import '../loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class PatrolScreen extends StatefulWidget {
+class PatrolDetailScreen extends StatefulWidget {
   final int idCheckout;
-  const PatrolScreen({Key? key, required this.idCheckout}) : super(key: key);
+  final String uname;
+  const PatrolDetailScreen({Key? key, required this.idCheckout, required this.uname}) : super(key: key);
 
   @override
-  _PatrolScreenState createState() => _PatrolScreenState();
+  _PatrolDetailScreenState createState() => _PatrolDetailScreenState();
 }
 
 int idUser = 0;
 int idTag = 2;
 
-class _PatrolScreenState extends State<PatrolScreen>
+class _PatrolDetailScreenState extends State<PatrolDetailScreen>
     with SingleTickerProviderStateMixin
     implements PatrolState {
   String barcode = "";
@@ -36,7 +39,7 @@ class _PatrolScreenState extends State<PatrolScreen>
   late PatrolPresenter _patrolPresenter;
   late TabController tabController;
 
-  _PatrolScreenState() {
+  _PatrolDetailScreenState() {
     _patrolPresenter = PatrolPresenter();
   }
 
@@ -77,9 +80,9 @@ class _PatrolScreenState extends State<PatrolScreen>
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      "Daftar Checkpoint",
+                      "Daftar Checkpoint " + widget.uname,
                       style: GoogleFonts.poppins(
-                        color: AppColors.lightGreenColor,
+                        color: AppColors.darkTextColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
@@ -121,15 +124,15 @@ class _PatrolScreenState extends State<PatrolScreen>
                           itemBuilder: (BuildContext context, int itemIndex) =>
                         GestureDetector(
                           onTap: () {
-                            _patrolModel.patrol[itemIndex].status =='1'
-                            ? Fluttertoast.showToast(msg: 'pos sudah dilewati',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor: Colors.grey,
-                              textColor: Colors.white,
-                              fontSize: 15)
-                            : scan(_patrolModel.patrol[itemIndex].idQrcode);
+                            showDialog(
+                                        context: context,
+                                        builder: (context) => DialogPatrolDetail(
+                                          image: _patrolModel.patrol[itemIndex].images,
+                                          name: widget.uname,
+                                          activity: _patrolModel.patrol[itemIndex].lokasi, 
+                                          jam: _patrolModel.patrol[itemIndex].jam,
+                                          status: _patrolModel.patrol[itemIndex].status,
+                                        ));
                           },
                           child: Container(
                               margin: const EdgeInsets.all(20),

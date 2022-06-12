@@ -12,10 +12,12 @@ import 'package:gms_mobile/src/state/patrol_state.dart';
 import '../../../src/presenter/patrol_presenter.dart';
 import '../../../src/resources/session.dart';
 import '../../patrol.dart';
-import '../activity/dialogpatroldetail.dart';
+// import '../activity/dialogpatroldetail.dart';
 import '../component/clipath.dart';
 import '../loading.dart';
 import 'package:gms_mobile/helper/getStorage.dart' as constant;
+
+import '../patrol/patrol_detail_screen.dart';
 
 class PatrolAwalScreen extends StatefulWidget {
   const PatrolAwalScreen({Key? key}) : super(key: key);
@@ -213,23 +215,26 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
                                                 int itemIndex) =>
                                             InkWell(
                                           onTap: () {
-                                            showDialog(context: context, builder: (context) => DialogPatrolDetail(
-                                              image: _patrolModel
-                                                          .patrolAwal[itemIndex]
-                                                          .images,
-                                              name: _patrolModel
-                                                          .patrolAwal[itemIndex]
-                                                          .username,
-                                              lokasi: _patrolModel
-                                                          .patrolAwal[itemIndex]
-                                                          .lokasi,
-                                              note: _patrolModel
-                                                          .patrolAwal[itemIndex]
-                                                          .note,
-                                            ));
+                                            // _patrolPresenter.getDetailPatrol(context, _patrolModel.patrolAwal[itemIndex].idQrcode);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PatrolDetailScreen(
+                                                            idCheckout:
+                                                                int.parse(
+                                                                    _patrolModel
+                                                                    .patrolAwal[
+                                                                        itemIndex]
+                                                                    .idQrcode,
+                                                            ),
+                                                            uname: _patrolModel
+                                                                .patrolAwal[
+                                                                    itemIndex]
+                                                                .username)));
                                           },
                                           child: Container(
-                                            height: 100,
+                                            height: 88,
                                             margin: EdgeInsets.symmetric(
                                                 vertical: 5.0),
                                             padding: EdgeInsets.all(10),
@@ -243,8 +248,8 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
                                                       .spaceAround,
                                               children: <Widget>[
                                                 new Icon(
-                                                  Ionicons.home_outline,
-                                                  size: 36,
+                                                  Ionicons.shield_checkmark_outline,
+                                                  size: 24,
                                                   color: Color(0xff485460),
                                                 ),
                                                 Column(
@@ -266,7 +271,7 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
                                                           _patrolModel
                                                               .patrolAwal[
                                                                   itemIndex]
-                                                              .updatedAt,
+                                                              .currentdatetime,
                                                       style:
                                                           GoogleFonts.poppins(
                                                         textStyle: TextStyle(
@@ -277,12 +282,12 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
                                                       maxLines: 3,
                                                     ),
                                                     SizedBox(
-                                                      height: 4,
+                                                      height: 3,
                                                     ),
                                                   ],
                                                 ),
                                                 SizedBox(
-                                                  width: 20,
+                                                  width: 16,
                                                 ),
                                                 Icon(
                                                   Ionicons.chevron_forward,
@@ -342,5 +347,20 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
   @override
   void showstatusKondisi(BuildContext context) {
     
+  }
+
+  @override
+  void showStatusLokasi(BuildContext context) {
+    
+  }
+
+  @override
+  void showDetailPatrol(BuildContext context, String idCheck) {
+    print('go patrol');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                PatrolScreen(idCheckout: int.parse(idCheck))));
   }
 }

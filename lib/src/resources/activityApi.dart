@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 
-import '../model/visitor_model.dart';
 import '../response/activity_response.dart';
 import '../response/tamu_response.dart';
 
@@ -21,7 +20,7 @@ class ActivityServices {
             ActivityResponse.fromJson(json.decode(response.body));
         return activityResponse;
     } else {
-      return Future.error("Yah, Internet Kamu error!");
+      return Future.error("data kosong 🤷‍♂️");
     }
   }
   // Future<List<AcitivityResponse>> getData(String idsite) async {
@@ -69,7 +68,7 @@ class ActivityServices {
             TamuResponse.fromJson(json.decode(response.body));
         return tamuResponse;
       } else {
-        return Future.error("...");
+        return Future.error("data kosong 🤷‍♂️");
       }
     } on SocketException {
       return Future.error("Yah, Internet Kamu error!😑");

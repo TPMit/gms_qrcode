@@ -9,5 +9,7 @@ abstract class PatrolState {
   void onError(String error);
   void showstatusKondisi(BuildContext context);
   void showDeskripsi(BuildContext context);
+  void showStatusLokasi(BuildContext context);
   void scan(String idTag);
+  void showDetailPatrol(BuildContext context, String idCheck);
 }

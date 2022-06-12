@@ -43,6 +43,7 @@ class DataCheckpoint {
   String? createdAt;
   String? updatedAt;
   String? status;
+  String? statusLokasi;
 
   DataCheckpoint(
       {this.idCheck,
@@ -61,7 +62,8 @@ class DataCheckpoint {
       this.latitudeLongitude,
       this.createdAt,
       this.updatedAt,
-      this.status});
+      this.status,
+      this.statusLokasi});
 
   DataCheckpoint.fromJson(Map<String, dynamic> json) {
     idCheck = json['id_check'];
@@ -72,7 +74,7 @@ class DataCheckpoint {
     label = json['label'];
     lokasi = json['lokasi'];
     tagid = json['tagid'];
-    image = json['image'];
+    image = json['image'] == null ? '' : json['image'];
     tanggal = json['tanggal'];
     isclear = json['isclear'];
     note = json['note'];
@@ -81,6 +83,7 @@ class DataCheckpoint {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     status = json['status'];
+    statusLokasi = json['status_lokasi'];
   }
 
   Map<String, dynamic> toJson() {
@@ -102,6 +105,7 @@ class DataCheckpoint {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['status'] = status;
+    data['status_lokasi'] = statusLokasi;
     return data;
   }
 }

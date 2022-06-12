@@ -9,6 +9,8 @@ class Patrol {
   String images;
   String latitudeLongitude;
   String status;
+  String statusLokasi;
+  String jam;
   Patrol(
       {
     required this.idQrcode,
@@ -19,35 +21,24 @@ class Patrol {
     required this.images,
     required this.latitudeLongitude,
     required this.status,
+    required this.statusLokasi,
+    required this.jam,
   });
 }
 
 class PatrolAwal {
   String idQrcode;
   String currentdatetime;
-  String tagid;
-  String idSite;
-  String label;
-  String note;
-  String lokasi;
-  String images;
-  String latitudeLongitude;
-  String status;
   String username;
-  String updatedAt;
+  String tanggal;
+  String label;
   PatrolAwal({
     required this.idQrcode,
     required this.currentdatetime,
-    required this.tagid,
-    required this.idSite,
-    required this.label,
-    required this.note,
-    required this.lokasi,
-    required this.images,
-    required this.latitudeLongitude,
-    required this.status,
     required this.username,
-    required this.updatedAt,
+    required this.tanggal,
+    required this.label,
+    
   });
 }
 
@@ -63,6 +54,9 @@ class PatrolModel {
   String idTags = "";
   late int isKondusif;
   String desc = "";
+  bool location = false;
+  double? latitude;
+  double? longitude;
   final TextEditingController username = TextEditingController();
   final TextEditingController email = TextEditingController();
   List<Patrol> patrol = <Patrol>[];

@@ -138,6 +138,7 @@ class _ActivitiesState extends State<Activities> implements ActivityState {
                                                     activity: _activityModel
                                                         .activity[itemIndex]
                                                         .activity,
+                                                    jam: _activityModel.activity[itemIndex].dateTime
                                                   ));
                                       },
                                       child: Container(

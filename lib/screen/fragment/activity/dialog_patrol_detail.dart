@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-class DialogActivityDetail extends StatelessWidget {
-  const DialogActivityDetail(
+class DialogPatrolDetail extends StatelessWidget {
+  const DialogPatrolDetail(
       {Key? key,
       required this.image,
       required this.name,
       required this.activity,
-      required this.jam})
+      required this.jam,
+      required this.status})
       : super(key: key);
   final String name;
   final String image, activity;
   final String jam;
+  final String status;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -27,8 +29,9 @@ class DialogActivityDetail extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
-          margin: const EdgeInsets.only(top: 45),
+          padding:
+              const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
+          margin: const EdgeInsets.only(top: 45,left: 10),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.white,
@@ -41,7 +44,7 @@ class DialogActivityDetail extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const Text(
-                "Detail Aktifitas",
+                "Detail Patroli",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               const SizedBox(
@@ -67,14 +70,22 @@ class DialogActivityDetail extends StatelessWidget {
                             height: 8,
                           ),
                           Text(jam),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          status == '0'
+                          ? Text('Status: Patrol belum dilakukan', style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 14),)
+                          : Text(
+                                  'Status: Patrol sudah dilakukan',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 14),
+                                )
                         ],
                       ),
                     ),
-                    image != ''
-                    ? Image.network(
-                        'https://gmsnv.mindotek.com/assets/imagesofgms/activities/' +
-                            image)
-                    : SizedBox()
                   ],
                 ),
               )

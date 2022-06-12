@@ -13,7 +13,7 @@ import 'package:line_icons/line_icons.dart';
 
 import '../src/model/visitor_model.dart';
 import '../src/presenter/tamu_awal_presenter.dart';
-import '../src/resources/activityApi.dart';
+
 import '../src/resources/session.dart';
 import 'fragment/activity/dialog_tamu_detail.dart';
 import 'fragment/component/background.dart';
