@@ -27,8 +27,16 @@ class ListAbsenService {
       } else {
         return [];
       }
-    } catch (e) {
-      return [];
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
 
@@ -44,17 +52,26 @@ class ListAbsenService {
       } else {
         return [];
       }
-    } catch (e) {
-      return [];
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
 
   Future<PenghuniResponse> getMemberPenghuni(String query) async {
       if(query != ''){
-        print(query);
+        try {
+          print(query);
         final response = await http.get(Uri.parse(
             "https://gmsnv.mindotek.com/rest/listmemberPenghuni/?param=$query"));
-         if (response.statusCode == 200) {
+        if (response.statusCode == 200) {
           print('penghuni:');
           print(response.body);
           PenghuniResponse penghuniResponse =
@@ -63,8 +80,21 @@ class ListAbsenService {
         } else {
           return Future.error("Yah, Internet Kamu error!");
         }
+        } on SocketException {
+          return Future.error("Yah, Internet Kamu error!😑");
+        } on HttpException {
+          print("Fungsi post ga nemu 😱");
+          // return Future.error("Fungsi post ga nemu 😱");
+          return Future.error("terjadi error");
+        } on FormatException {
+          print("Response format kacauu! 👎");
+          // return Future.error("Response format kacauu! 👎");
+          return Future.error("terjadi error");
+        }
+        
       }else{
-        final response = await http.get(Uri.parse(
+        try{
+final response = await http.get(Uri.parse(
             "https://gmsnv.mindotek.com/rest/listmemberPenghuni/"));
         if (response.statusCode == 200) {
           print('penghuni:');
@@ -75,13 +105,25 @@ class ListAbsenService {
         } else {
           return Future.error("Yah, Internet Kamu error!");
         }
-      }
+        }   
+      }on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
   }
 
   Future<KeperluanResponse> getKeperluan(String param) async {
     print(param);
       if(param != ''){
-        final response = await _client.get(Uri.parse(
+        try{
+          final response = await _client.get(Uri.parse(
           "https://gmsnv.mindotek.com/rest/listKeperluan/param=$param"));
       if (response.statusCode == 200) {
         print('keperluan:');
@@ -92,8 +134,21 @@ class ListAbsenService {
       } else {
         return Future.error("Yah, Internet Kamu error!");
       }
+        }on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
+        
       }else{
-        final response = await _client.get(Uri.parse(
+        try{
+  final response = await _client.get(Uri.parse(
             "https://gmsnv.mindotek.com/rest/listKeperluan/"));
         if (response.statusCode == 200) {
           print('keperluan:');
@@ -104,6 +159,18 @@ class ListAbsenService {
         } else {
           return Future.error("Yah, Internet Kamu error!");
         }
+        }on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
+      
       }
   }
 
@@ -118,8 +185,16 @@ class ListAbsenService {
       } else {
         return [];
       }
-    } catch (e) {
-      return [];
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
 }
