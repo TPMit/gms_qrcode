@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, avoid_print
 
 import 'dart:convert';
+import 'dart:io';
 
 import '../model/list_checkpoint_model.dart';
 import 'package:http/http.dart' as http;
@@ -14,20 +15,34 @@ class ListCheckPointService {
   Client _client = new Client();
 
   Future<CheckpointAllResponse> getDataCheckPointAll() async {
-    final response = await _client.get(
+    try{
+      final response = await _client.get(
         Uri.parse("https://gmsnv.mindotek.com/rest/listcheckpointall/"));
-    print(response.body);
-    if (response.statusCode == 200) {
-      CheckpointAllResponse checkpointAllResponse =
-          CheckpointAllResponse.fromJson(json.decode(response.body));
-      return checkpointAllResponse;
-    } else {
-      return Future.error("Yah, Internet Kamu error!");
+        
+      print(response.body);
+        if (response.statusCode == 200) {
+          CheckpointAllResponse checkpointAllResponse =
+              CheckpointAllResponse.fromJson(json.decode(response.body));
+          return checkpointAllResponse;
+        } else {
+          return Future.error("Yah, Internet Kamu error!");
+        }
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
 
   Future<CheckpointParentResponse> getDataCheckPointParent() async {
-    final response = await _client
+    try{
+      final response = await _client
         .get(Uri.parse("https://gmsnv.mindotek.com/rest/listcheckpointparent/"));
     print(response.body);
     if (response.statusCode == 200) {
@@ -37,6 +52,18 @@ class ListCheckPointService {
     } else {
       return Future.error("Yah, Internet Kamu error!");
     }
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
+    
   }
   
   static Future<List<ListCheckPointModel>> get(String param) async {
@@ -53,13 +80,22 @@ class ListCheckPointService {
       } else {
         return [];
       }
-    } catch (e) {
-      return [];
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
 
   static Future<QrcodeTagResponse> getHistoryCheckPoints(String idCheckpoint) async {
-    print('getdata');
+    try{
+print('getdata');
     print(idCheckpoint);
     final response = await http.get(Uri.parse(
         "https://gmsnv.mindotek.com/rest/listcheckpoint?idCheckpoint=$idCheckpoint"));
@@ -76,10 +112,21 @@ class ListCheckPointService {
     } else {
       return res['data'];
     }
+    }on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
+    
   }
 
-  static Future postCheckPoint(
-     String idCheck, String tagId, int isKondusif, String desc, String lokasi) async {
+  static Future postCheckPoint( String idCheck, String tagId, int isKondusif, String desc, String lokasi) async {
     final response = await http.post(
         Uri.parse('https://gmsnv.mindotek.com/Rest/checkpointbyqr'),
         body: {
@@ -102,50 +149,76 @@ class ListCheckPointService {
     } else {
       Future.error("Yah, Internet kamu error!");
     }
-  }
+    }
+    
 
   static Future<int> newCheckpoint(String idUser, String idSite) async {
-    final response = await http.post(Uri.parse(
-        "https://gmsnv.mindotek.com/rest/newCheckpoint"),
-        body: {
-          'idUser': idUser,
-          'idSite': idSite,
-        });
-    if (response.body.isNotEmpty) {
-      Map<String, dynamic> res = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        print("New Checkpoint");
-        if (res['success']) {
-          return int.parse(res['data']);
+    try{
+      final response = await http.post(Uri.parse(
+          "https://gmsnv.mindotek.com/rest/newCheckpoint"),
+          body: {
+            'idUser': idUser,
+            'idSite': idSite,
+          });
+      if (response.body.isNotEmpty) {
+        Map<String, dynamic> res = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          print("New Checkpoint");
+          if (res['success']) {
+            return int.parse(res['data']);
+          } else {
+            return 0;
+          }
         } else {
           return 0;
         }
       } else {
         return 0;
       }
-    } else {
-      return 0;
+    }on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
+    
   }
 
   static Future<int> checkEmpty(String idTag) async {
-      final response = await http.get(Uri.parse(
-          "https://gmsnv.mindotek.com/rest/checkEmptyCheckPoint?idTag=$idTag"));
-    if (response.body.isNotEmpty) {
-      Map<String, dynamic> res = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-      print("Check Empty");
-      if (res['success']) {
-        return res['data'];
-      } else {
-        return 0;
-      }
-    } else {
-      return 0;
+      try{
+        final response = await http.get(Uri.parse(
+              "https://gmsnv.mindotek.com/rest/checkEmptyCheckPoint?idTag=$idTag"));
+        if (response.body.isNotEmpty) {
+          Map<String, dynamic> res = jsonDecode(response.body);
+          if (response.statusCode == 200) {
+          print("Check Empty");
+          if (res['success']) {
+            return res['data'];
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
+        }else{
+          return 0;
+        }
+    }on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
-    }else{
-      return 0;
-    }
+      
   }
-
 }

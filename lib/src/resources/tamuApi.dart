@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, file_names
 
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 
 import '../response/visitor_count_response.dart';
@@ -17,8 +19,16 @@ class VisitorService {
       } else {
         return [];
       }
-    } catch (e) {
-      return [];
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
 }
