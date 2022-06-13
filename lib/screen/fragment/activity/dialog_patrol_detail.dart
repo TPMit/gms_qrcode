@@ -7,12 +7,14 @@ class DialogPatrolDetail extends StatelessWidget {
       required this.name,
       required this.activity,
       required this.jam,
-      required this.status})
+      required this.status,
+      required this.statuslokasi})
       : super(key: key);
   final String name;
   final String image, activity;
   final String jam;
   final String status;
+  final String statuslokasi;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -78,11 +80,27 @@ class DialogPatrolDetail extends StatelessWidget {
                                                               color:
                                                                   Colors.black,
                                                               fontSize: 14),)
-                          : Text(
-                                  'Status: Patrol sudah dilakukan',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 14),
-                                )
+                          : Column(
+                            children: [
+                              Text(
+                                      'Status: Patrol sudah dilakukan',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 14),
+                                    ),
+                              statuslokasi == '0'
+                              ? Text(
+                                      'Lokasi tidak cocok',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 14),
+                                    )
+                              : Text(
+                                            'Lokasi cocok',
+                                            style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 14),
+                                          )
+                            ],
+                          )
                         ],
                       ),
                     ),

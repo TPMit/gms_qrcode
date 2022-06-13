@@ -125,7 +125,7 @@ class _DialogTamuDetailState extends State<DialogTamuDetail> {
                             height: 8,
                           ),
                           Image.network(
-                        'https://gmsqr.tpm-security.com/assets/imagesofgms/visitor/${widget.image}', height: 250, width: 300,),
+                        'https://gmsnv.mindotek.com/assets/imagesofgms/visitor/${widget.image}', height: 250, width: 300,),
                           widget.status == '1' ?
                           Container(
                             padding:

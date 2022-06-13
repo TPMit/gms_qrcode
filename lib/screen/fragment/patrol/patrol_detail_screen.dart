@@ -132,6 +132,7 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
                                           activity: _patrolModel.patrol[itemIndex].lokasi, 
                                           jam: _patrolModel.patrol[itemIndex].jam,
                                           status: _patrolModel.patrol[itemIndex].status,
+                                          statuslokasi: _patrolModel.patrol[itemIndex].statusLokasi,
                                         ));
                           },
                           child: Container(
