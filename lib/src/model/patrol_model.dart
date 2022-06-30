@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Patrol {
   String idQrcode;
+  String idUser;
   String tagid;
   String idSite;
   String label;
@@ -14,6 +15,7 @@ class Patrol {
   Patrol(
       {
     required this.idQrcode,
+    required this.idUser,
     required this.tagid,
     required this.idSite,
     required this.label,

@@ -19,6 +19,7 @@ abstract class PatrolPresenterAbstract {
   void getData(){}
   void getUserLocation(BuildContext context){}
   void getDetailPatrol(BuildContext context, String idCheck){}
+  void checkJam(String time, String idQrcode, String idUser){}
 }
 
 class PatrolPresenter implements PatrolPresenterAbstract {
@@ -44,6 +45,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
       value.dataCheckpoint?.forEach((element) { 
         _patrolModel.patrol.add(Patrol(
           idQrcode: element.idCheck.toString(),
+          idUser: element.idUser.toString(),
           idSite: element.idSite.toString(),
           label: element.label.toString(),
           lokasi: element.lokasi.toString(),
@@ -94,6 +96,9 @@ class PatrolPresenter implements PatrolPresenterAbstract {
         .then((value) async {
       print(value);
       _patrolModel.isloading = false;
+      _patrolModel.latitude = null;
+      _patrolModel.longitude = null;
+      _patrolModel.location = false;
       _patrolState.refreshData(_patrolModel);
       _patrolState.onSuccess("Update Patrol berhasil");
     }).catchError((onError) {
@@ -261,6 +266,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
       value.dataCheckpoint?.forEach((element) {
         _patrolModel.patrol.add(Patrol(
           idQrcode: element.idCheck.toString(),
+          idUser: element.idUser.toString(),
           idSite: element.idSite.toString(),
           label: element.label.toString(),
           lokasi: element.lokasi.toString(),
@@ -280,6 +286,24 @@ class PatrolPresenter implements PatrolPresenterAbstract {
       _patrolModel.isloading = false;
       _patrolState.refreshData(_patrolModel);
       _patrolState.onError(err.toString());
+    });
+  }
+
+  @override
+  void checkJam(String time, String idQrcode, idUser) {
+    _patrolModel.isloading = true;
+    _patrolState.refreshData(_patrolModel);
+    // print(time);
+    // print('======');
+    // print(idUser);
+    _listCheckPointService.checkTime(time, idUser).then((value) {
+      _patrolModel.isloading = false;
+      _patrolState.refreshData(_patrolModel);
+      _patrolState.scan(idQrcode);
+    }).onError((error, stackTrace) {
+      _patrolModel.isloading = false;
+      _patrolState.refreshData(_patrolModel);
+      _patrolState.onError(error.toString());
     });
   }
 }

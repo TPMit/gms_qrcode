@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gms_mobile/screen/fragment/activity/dialogactivitydetail.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -62,7 +61,8 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
       body: _patrolModel.isloading
           ? const Loading()
           : SafeArea(
-        child: SizedBox(
+        child: Container(
+          color: Color(0xff51557E),
           width: MediaQuery.of(context).size.width,
           height: double.infinity,
           child: Column(
@@ -82,7 +82,7 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
                     child: Text(
                       "Daftar Checkpoint " + widget.uname,
                       style: GoogleFonts.poppins(
-                        color: AppColors.darkTextColor,
+                        color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
@@ -108,7 +108,8 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
       
               ///Container for places list
               Expanded(
-                child: SizedBox(
+                child: Container(
+                  color: Color(0xff1B2430),
                   width: MediaQuery.of(context).size.width,
                   height: double.infinity,
                   child: SingleChildScrollView(
@@ -142,10 +143,15 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
                                 children: [
                                   Positioned.fill(
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: SvgPicture.asset('assets/img/4.svg',
-                                          fit: BoxFit.cover),
-                                    ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: Image.network(
+                                                  'https://gmsnv.mindotek.com/assets/imagesofgms/lokasitag/' +
+                                                      _patrolModel
+                                                          .patrol[itemIndex]
+                                                          .images,
+                                                  fit: BoxFit.cover),
+                                            ),
                                   ),
                                   Positioned(
                                     bottom: 0,

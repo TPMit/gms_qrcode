@@ -36,6 +36,7 @@ class DataCheckpoint {
   String? tagid;
   String? image;
   String? tanggal;
+  String? time;
   String? isclear;
   String? note;
   String? latitudeLongitudeTag;
@@ -56,6 +57,7 @@ class DataCheckpoint {
       this.tagid,
       this.image,
       this.tanggal,
+      this.time,
       this.isclear,
       this.note,
       this.latitudeLongitudeTag,
@@ -74,8 +76,9 @@ class DataCheckpoint {
     label = json['label'];
     lokasi = json['lokasi'];
     tagid = json['tagid'];
-    image = json['image'] == null ? '' : json['image'];
+    image = json['image'] == null ? 'default.jpg' : json['image'];
     tanggal = json['tanggal'];
+    time = json['time'] == null ? '00:00' : json['time'];
     isclear = json['isclear'];
     note = json['note'];
     latitudeLongitudeTag = json['latitude_longitude_tag'];
@@ -98,6 +101,7 @@ class DataCheckpoint {
     data['tagid'] = tagid;
     data['image'] = image;
     data['tanggal'] = tanggal;
+    data['time'] = time;
     data['isclear'] = isclear;
     data['note'] = note;
     data['latitude_longitude_tag'] = latitudeLongitudeTag;

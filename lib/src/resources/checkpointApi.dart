@@ -10,6 +10,7 @@ import 'package:http/http.dart' show Client;
 import '../response/checkpointAll_response.dart';
 import '../response/checkpointParent_response.dart';
 import '../response/checkpointTagResponse.dart';
+import '../response/default_response.dart';
 
 class ListCheckPointService {
   Client _client = new Client();
@@ -95,7 +96,7 @@ class ListCheckPointService {
 
   static Future<QrcodeTagResponse> getHistoryCheckPoints(String idCheckpoint) async {
     try{
-print('getdata');
+    print('getdata');
     print(idCheckpoint);
     final response = await http.get(Uri.parse(
         "https://gmsnv.mindotek.com/rest/listcheckpoint?idCheckpoint=$idCheckpoint"));
@@ -124,6 +125,38 @@ print('getdata');
       return Future.error("terjadi error");
     }
     
+  }
+
+  Future<DefaultResponse> checkTime(String time, String idUser) async {
+    try {
+      print('getdata');
+      print(time);
+      final response = await http.get(Uri.parse(
+          "https://gmsnv.mindotek.com/rest/validatetime?time=$time&idUser=$idUser"));
+      print(response.body);
+      Map<String, dynamic> res = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        if (res['status']) {
+          DefaultResponse defaultResponse =
+              DefaultResponse.fromJson(json.decode(response.body));
+          return defaultResponse;
+        } else {
+          return Future.error("Yah, Belum saatnya untuk patroli!");
+        }
+      } else {
+        return Future.error("Yah, Belum saatnya untuk patroli!");
+      }
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
   }
 
   static Future postCheckPoint( String idCheck, String tagId, int isKondusif, String desc, String lokasi) async {

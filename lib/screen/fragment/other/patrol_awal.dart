@@ -167,7 +167,7 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
                                                 Radius.circular(10))),
                                         child: const Center(
                                           child: Text(
-                                            "checkpoint",
+                                            "Mulai Patrol",
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold),

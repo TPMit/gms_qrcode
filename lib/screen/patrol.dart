@@ -35,6 +35,7 @@ class _PatrolScreenState extends State<PatrolScreen>
   late PatrolModel _patrolModel;
   late PatrolPresenter _patrolPresenter;
   late TabController tabController;
+  DateTime now = DateTime.now();
 
   _PatrolScreenState() {
     _patrolPresenter = PatrolPresenter();
@@ -59,7 +60,8 @@ class _PatrolScreenState extends State<PatrolScreen>
       body: _patrolModel.isloading
           ? const Loading()
           : SafeArea(
-        child: SizedBox(
+        child: Container(
+          color: Color(0xffF7E9D7),
           width: MediaQuery.of(context).size.width,
           height: double.infinity,
           child: Column(
@@ -105,7 +107,8 @@ class _PatrolScreenState extends State<PatrolScreen>
       
               ///Container for places list
               Expanded(
-                child: SizedBox(
+                child: Container(
+                  color: Color(0xffFCFFE7),
                   width: MediaQuery.of(context).size.width,
                   height: double.infinity,
                   child: SingleChildScrollView(
@@ -129,7 +132,7 @@ class _PatrolScreenState extends State<PatrolScreen>
                               backgroundColor: Colors.grey,
                               textColor: Colors.white,
                               fontSize: 15)
-                            : scan(_patrolModel.patrol[itemIndex].idQrcode);
+                            : _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
                           },
                           child: Container(
                               margin: const EdgeInsets.all(20),
@@ -139,7 +142,7 @@ class _PatrolScreenState extends State<PatrolScreen>
                                   Positioned.fill(
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                      child: SvgPicture.asset('assets/img/4.svg',
+                                      child: Image.network('https://gmsnv.mindotek.com/assets/imagesofgms/lokasitag/' + _patrolModel.patrol[itemIndex].images,
                                           fit: BoxFit.cover),
                                     ),
                                   ),
@@ -339,12 +342,12 @@ class _PatrolScreenState extends State<PatrolScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                  "lokasi user harus sama dengan lokasi absen masuk"),
+                                  "lokasi user harus sama dengan lokasi tag tersebut"),
                               const SizedBox(width: 8),
-                              Text('Your latitude: ${_patrolModel.latitude}'),
+                              Text('latitude kamu: ${_patrolModel.latitude == null ? 'belum diisi' : _patrolModel.latitude}'),
                               const SizedBox(width: 8),
                               Text(
-                                  'Your longtitude: ${_patrolModel.longitude}'),
+                                  'longtitude kamu: ${_patrolModel.longitude == null ? 'belum diisi' : _patrolModel.longitude}'),
                               _patrolModel.location
                                   ? Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
