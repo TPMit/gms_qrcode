@@ -30,12 +30,14 @@ class Patrol {
 
 class PatrolAwal {
   String idQrcode;
+  String idSite;
   String currentdatetime;
   String username;
   String tanggal;
   String label;
   PatrolAwal({
     required this.idQrcode,
+    required this.idSite,
     required this.currentdatetime,
     required this.username,
     required this.tanggal,

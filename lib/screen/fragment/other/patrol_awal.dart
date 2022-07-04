@@ -231,7 +231,9 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
                                                             uname: _patrolModel
                                                                 .patrolAwal[
                                                                     itemIndex]
-                                                                .username)));
+                                                                .username,
+                                                            idSite: _patrolModel.patrolAwal[itemIndex].idSite,
+                                                              )));
                                           },
                                           child: Container(
                                             height: 88,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gms_mobile/screen/absen.dart';
 import 'package:gms_mobile/screen/absen_keluar.dart';
@@ -97,10 +98,10 @@ class _HomeState extends State<Home> implements HomeState {
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/img/alogo.png',
-                          fit: BoxFit.fill,
-                        ),
+                        // Image.asset(
+                        //   'assets/img/alogo.png',
+                        //   fit: BoxFit.fill,
+                        // ),
                         const SizedBox(
                           height: 10.0,
                         ),
@@ -208,12 +209,39 @@ class _HomeState extends State<Home> implements HomeState {
                                               size: 30.0),
                                         ),
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Icon(Icons.notifications,
-                                            color: LightColors.kDarkBlue,
-                                            size: 25.0),
-                                      ),
+                                      // const Padding(
+                                      //   padding: EdgeInsets.all(10.0),
+                                      //   child: Icon(Icons.notifications,
+                                      //       color: LightColors.kDarkBlue,
+                                      //       size: 25.0),
+                                      // ),
+                                      Visibility(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(context, '/selectSession');
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons.userClock,
+                                                  color: Colors.teal,
+                                                ),
+                                                SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Text(
+                                                  'Ganti Sesi',
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.black45),
+                                                )
+                                              ],
+                                            ),
+                                          ))
                                     ],
                                   ),
                                   Padding(

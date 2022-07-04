@@ -9,24 +9,24 @@ abstract class TamuPresenterAbstract {
 }
 
 class TamuPresenter implements TamuPresenterAbstract {
-  final TamuModel _TamuModel = TamuModel();
-  late TamuState _TamuState;
+  final TamuModel _tamuModel = TamuModel();
+  late TamuState _tamuState;
   final ActivityServices _activityServices = ActivityServices();
 
   @override
   set view(TamuState view) {
-    _TamuState = view;
-    _TamuState.refreshData(_TamuModel);
+    _tamuState = view;
+    _tamuState.refreshData(_tamuModel);
   }
 
   @override
   void getData(String param) {
     print('mulaiii ambil data tamu');
-    _TamuModel.isloading = true;
-    _TamuState.refreshData(_TamuModel);
+    _tamuModel.isloading = true;
+    _tamuState.refreshData(_tamuModel);
     _activityServices.getDataTamu(param).then((value) {
       value.dataVisitor!.forEach((element) {
-        _TamuModel.tamunya.add(Tamu(
+        _tamuModel.tamunya.add(Tamu(
           blok: element.blok!,
           dateTime: element.tanggal.toString(),
           id: element.idTamu.toString(),
@@ -42,13 +42,13 @@ class TamuPresenter implements TamuPresenterAbstract {
           status: element.status.toString()
         ));
       });
-      _TamuModel.isloading = false;
-      _TamuState.refreshData(_TamuModel);
+      _tamuModel.isloading = false;
+      _tamuState.refreshData(_tamuModel);
     }).catchError((error) {
         print(error);
-      _TamuState.onError(error);
-      _TamuModel.isloading = false;
-      _TamuState.refreshData(_TamuModel);
+      _tamuState.onError(error);
+      _tamuModel.isloading = false;
+      _tamuState.refreshData(_tamuModel);
     });
   }
 }

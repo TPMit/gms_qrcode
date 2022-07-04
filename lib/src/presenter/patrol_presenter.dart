@@ -13,7 +13,7 @@ abstract class PatrolPresenterAbstract {
   void checkDeskripsi(BuildContext context, int kondusif) {}
   void postCheckPoint(String idCheck, String nik, String tagId, int isKondusif, String desc, String lokasi) {}
   void postCheckPointUnCondusif(String idCheck, String nik, String tagId, int isKondusif, String desc, String lokasi) {}
-  void getCheckpointTag(int idSite){}
+  void getCheckpointTag(String time, idSite,int idCheckpoint){}
   void newCheckpoint(String idSite, String idUser){}
   void checkEmpty(String tagId){}
   void getData(){}
@@ -36,7 +36,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
   }
 
   @override
-  void getCheckpointTag(int idCheckpoint) {
+  void getCheckpointTag(String time, idSite,int idCheckpoint) {
     print(idCheckpoint);
     _patrolModel.patrol.clear();
     _patrolModel.isloading = true;
@@ -176,6 +176,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
           values.dataCheckpoints!.forEach((element) {
             _patrolModel.patrolAwal.add(PatrolAwal(
               idQrcode: element.id.toString(),
+              idSite: element.idSite.toString(),
               currentdatetime: element.createdAt.toString(),
               username: element.username.toString(),
               tanggal: element.tanggal.toString(),
@@ -241,6 +242,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
       values.dataCheckpoints!.forEach((element) {
         _patrolModel.patrolAwal.add(PatrolAwal(
           idQrcode: element.id.toString(),
+          idSite: element.idSite.toString(),
           currentdatetime: element.createdAt.toString(),
           username: element.username.toString(),
           tanggal: element.tanggal.toString(),

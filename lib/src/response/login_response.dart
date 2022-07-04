@@ -18,7 +18,7 @@ class PostResult {
   factory PostResult.createPostResult(Map<String, dynamic> object) {
     return PostResult(
         idUser: object['id'].toString(),
-        nik: object['nik'].toString(),
+        nik: object['nik'] == null ? '0' : object['nik'].toString(),
         username: object['username'],
         idRole: object['id_role'].toString(),
         idsite: object['id_site'].toString(),

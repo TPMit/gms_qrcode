@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -15,6 +14,8 @@ import 'fragment/component/app_color.dart';
 import 'fragment/component/roundedbutton.dart';
 import 'fragment/loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_storage/get_storage.dart';
+import '../helper/getStorage.dart' as constants;
 
 class PatrolScreen extends StatefulWidget {
   final int idCheckout;
@@ -45,7 +46,9 @@ class _PatrolScreenState extends State<PatrolScreen>
   void initState() {
     super.initState();
     _patrolPresenter.view = this;
-    _patrolPresenter.getCheckpointTag(widget.idCheckout);
+    _patrolPresenter.getCheckpointTag(
+        now.hour.toString() + ":" + now.minute.toString(),
+        GetStorage().read(constants.idSite), widget.idCheckout);
     tabController = TabController(length: 2, vsync: this);
   }
 
@@ -132,7 +135,8 @@ class _PatrolScreenState extends State<PatrolScreen>
                               backgroundColor: Colors.grey,
                               textColor: Colors.white,
                               fontSize: 15)
-                            : _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
+                            : scan(_patrolModel.patrol[itemIndex].idQrcode);
+                            // _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
                           },
                           child: Container(
                               margin: const EdgeInsets.all(20),
@@ -244,7 +248,10 @@ class _PatrolScreenState extends State<PatrolScreen>
   void onSuccess(String success) {
     print(success);
     setState(() {
-    _patrolPresenter.getCheckpointTag(widget.idCheckout);
+    _patrolPresenter.getCheckpointTag(
+          now.hour.toString() + ":" + now.minute.toString(),
+          GetStorage().read(constants.idSite),
+          widget.idCheckout);
     });
     Fluttertoast.showToast(msg: 'CheckPoint berhasil dilewati',
       toastLength: Toast.LENGTH_SHORT,
@@ -260,7 +267,10 @@ class _PatrolScreenState extends State<PatrolScreen>
   void onSuccessUnCondusif(String success) {
     print(success);
     setState(() {
-      _patrolPresenter.getCheckpointTag(widget.idCheckout);
+      _patrolPresenter.getCheckpointTag(
+          now.hour.toString() + ":" + now.minute.toString(),
+          GetStorage().read(constants.idSite),
+          widget.idCheckout);
     });
     Fluttertoast.showToast(
         msg: 'CheckPoint berhasil dilewati',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../screen/activity.dart';
 import '../screen/fragment/checkpoint_page.dart';
+import '../screen/fragment/home/select_session.dart';
 import '../screen/home.dart';
 import '../screen/login.dart';
 import '../screen/absen.dart';
@@ -15,4 +16,5 @@ final routes = {
   '/accident': (BuildContext context) => const Activities(),
   '/tamu': (BuildContext context) => const TamuScreen(),
   '/checkpoint': (BuildContext context) => const CheckPointPage(),
+  '/selectSession': (BuildContext context) => const SelectSession(),
 };
