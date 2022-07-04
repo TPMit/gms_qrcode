@@ -135,8 +135,8 @@ class _PatrolScreenState extends State<PatrolScreen>
                               backgroundColor: Colors.grey,
                               textColor: Colors.white,
                               fontSize: 15)
-                            : scan(_patrolModel.patrol[itemIndex].idQrcode);
-                            // _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
+                              : _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
+                            // : scan(_patrolModel.patrol[itemIndex].idQrcode);
                           },
                           child: Container(
                               margin: const EdgeInsets.all(20),

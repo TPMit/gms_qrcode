@@ -121,6 +121,9 @@ class PatrolPresenter implements PatrolPresenterAbstract {
     ListCheckPointService.postCheckPoint(idCheck, tagId, isKondusif, desc, lokasi)
         .then((value) async {
       print(value);
+      _patrolModel.latitude = null;
+      _patrolModel.longitude = null;
+      _patrolModel.location = false;
       _patrolModel.isloading = false;
       _patrolState.refreshData(_patrolModel);
       _patrolState.onSuccessUnCondusif("Daftar Patrol ditambahkan");
@@ -200,27 +203,9 @@ class PatrolPresenter implements PatrolPresenterAbstract {
     _patrolModel.isloading = true;
     _patrolState.refreshData(_patrolModel);
 
-    Location location = Location();
 
-    // Check if location service is enable
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
 
-    // Check if permission is granted
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    final _locationData = await location.getLocation();
+    final _locationData = await getLocation();
     _patrolModel.latitude = _locationData.latitude;
     _patrolModel.longitude = _locationData.longitude;
     _patrolModel.isloading = false;

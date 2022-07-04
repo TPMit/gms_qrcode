@@ -58,27 +58,8 @@ class AbsenPresenter implements AbsenPresenterAbstract {
     _absenModel.isloading = true;
     _absenState.refreshData(_absenModel);
     
-    Location location = Location();
 
-    // Check if location service is enable
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    // Check if permission is granted
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    final _locationData = await location.getLocation();
+    final _locationData = await getLocation();
       _absenModel.latitude = _locationData.latitude;
       _absenModel.longitude = _locationData.longitude;
       _absenModel.isloading = false;
