@@ -337,7 +337,7 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
   }
 
   @override
-  void scan(String idTag) {
+  void scan(String idTag, String lokasiDb) {
     
   }
 
@@ -352,7 +352,7 @@ class _PatrolAwalScreenState extends State<PatrolAwalScreen>
   }
 
   @override
-  void showStatusLokasi(BuildContext context) {
+  void showStatusLokasi(BuildContext context, String lokasiDb) {
     
   }
 

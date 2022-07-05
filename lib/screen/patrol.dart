@@ -135,8 +135,8 @@ class _PatrolScreenState extends State<PatrolScreen>
                               backgroundColor: Colors.grey,
                               textColor: Colors.white,
                               fontSize: 15)
-                              : _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
-                            // : scan(_patrolModel.patrol[itemIndex].idQrcode);
+                            : scan(_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].lokasiDb.toString());
+                              // : _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
                           },
                           child: Container(
                               margin: const EdgeInsets.all(20),
@@ -292,7 +292,7 @@ class _PatrolScreenState extends State<PatrolScreen>
   }
 
   @override
-  void scan(String idTag) async {
+  void scan(String idTag, String lokasiDb) async {
     print('mulai scan 2');
     try {
       final result = await BarcodeScanner.scan();
@@ -301,7 +301,7 @@ class _PatrolScreenState extends State<PatrolScreen>
       });
       print(scanResult!.rawContent.toString());
       if (scanResult!.rawContent.toString() != "") {
-        _patrolPresenter.checkKondisi(context, idTag, scanResult!.rawContent.toString());
+        _patrolPresenter.checkKondisi(context, idTag, scanResult!.rawContent.toString(), lokasiDb);
       }
     } on PlatformException catch (e) {
       setState(() {
@@ -317,7 +317,7 @@ class _PatrolScreenState extends State<PatrolScreen>
   }
 
   @override
-  void showStatusLokasi(BuildContext context) {
+  void showStatusLokasi(BuildContext context, String lokasiDb) {
     showCupertinoModalBottomSheet(
         expand: true,
         context: context,
@@ -354,10 +354,8 @@ class _PatrolScreenState extends State<PatrolScreen>
                               const Text(
                                   "lokasi user harus sama dengan lokasi tag tersebut"),
                               const SizedBox(width: 8),
-                              Text('latitude kamu: ${_patrolModel.latitude == null ? 'belum diisi' : _patrolModel.latitude}'),
+                              Text('latitude dan longitude kamu: ${_patrolModel.latitude == null ? 'belum diisi' : lokasiDb}'),
                               const SizedBox(width: 8),
-                              Text(
-                                  'longtitude kamu: ${_patrolModel.longitude == null ? 'belum diisi' : _patrolModel.longitude}'),
                               _patrolModel.location
                                   ? Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -415,7 +413,7 @@ class _PatrolScreenState extends State<PatrolScreen>
                                           text: "Ambil Lokasi",
                                           press: () {
                                             _patrolPresenter
-                                                .getUserLocation(context);
+                                                .getUserLocation(context, lokasiDb);
                                           },
                                           color: Colors.blue,
                                         )

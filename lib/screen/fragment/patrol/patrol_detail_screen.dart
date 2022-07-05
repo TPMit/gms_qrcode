@@ -297,7 +297,7 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
   }
 
   @override
-  void scan(String idTag) async {
+  void scan(String idTag, String lokasiDb) async {
     print('mulai scan 2');
     try {
       final result = await BarcodeScanner.scan();
@@ -306,7 +306,7 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
       });
       print(scanResult!.rawContent.toString());
       if (scanResult!.rawContent.toString() != "") {
-        _patrolPresenter.checkKondisi(context, idTag, scanResult!.rawContent.toString());
+        _patrolPresenter.checkKondisi(context, idTag, scanResult!.rawContent.toString(), lokasiDb);
       }
     } on PlatformException catch (e) {
       setState(() {
@@ -322,7 +322,7 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
   }
 
   @override
-  void showStatusLokasi(BuildContext context) {
+  void showStatusLokasi(BuildContext context, String lokasiDb) {
     showCupertinoModalBottomSheet(
         expand: true,
         context: context,
@@ -420,7 +420,7 @@ class _PatrolDetailScreenState extends State<PatrolDetailScreen>
                                           text: "Ambil Lokasi",
                                           press: () {
                                             _patrolPresenter
-                                                .getUserLocation(context);
+                                                .getUserLocation(context, lokasiDb);
                                           },
                                           color: Colors.blue,
                                         )

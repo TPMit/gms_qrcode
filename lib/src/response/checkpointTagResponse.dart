@@ -45,6 +45,7 @@ class DataCheckpoint {
   String? updatedAt;
   String? status;
   String? statusLokasi;
+  String? lokasiDb;
 
   DataCheckpoint(
       {this.idCheck,
@@ -65,7 +66,8 @@ class DataCheckpoint {
       this.createdAt,
       this.updatedAt,
       this.status,
-      this.statusLokasi});
+      this.statusLokasi,
+      this.lokasiDb});
 
   DataCheckpoint.fromJson(Map<String, dynamic> json) {
     idCheck = json['id_check'];
@@ -87,6 +89,7 @@ class DataCheckpoint {
     updatedAt = json['updated_at'];
     status = json['status'];
     statusLokasi = json['status_lokasi'];
+    lokasiDb = json['lokasiDb'];
   }
 
   Map<String, dynamic> toJson() {
@@ -110,6 +113,7 @@ class DataCheckpoint {
     data['updated_at'] = updatedAt;
     data['status'] = status;
     data['status_lokasi'] = statusLokasi;
+    data['lokasiDb'] = lokasiDb;
     return data;
   }
 }

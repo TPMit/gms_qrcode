@@ -1,33 +1,40 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gms_mobile/src/model/patrol_model.dart';
 
 import '../resources/checkpointApi.dart';
 import '../state/patrol_state.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:math';
 
 abstract class PatrolPresenterAbstract {
   set view(PatrolState view) {}
-  void checkKondisi(BuildContext context, String idTag, String hasilQr) {}
+  void checkKondisi(BuildContext context, String idTag, String hasilQr,String lokasiDb) {}
   void checkDeskripsi(BuildContext context, int kondusif) {}
   void postCheckPoint(String idCheck, String nik, String tagId, int isKondusif, String desc, String lokasi) {}
   void postCheckPointUnCondusif(String idCheck, String nik, String tagId, int isKondusif, String desc, String lokasi) {}
   void getCheckpointTag(String time, idSite,int idCheckpoint){}
   void newCheckpoint(String idSite, String idUser){}
-  void checkEmpty(String tagId){}
+  void checkEmpty(String tagId, String lokasiDb){}
   void getData(){}
-  void getUserLocation(BuildContext context){}
+  void getUserLocation(BuildContext context, String lokasiDb){}
   void getDetailPatrol(BuildContext context, String idCheck){}
-  void checkJam(String time, String idQrcode, String idUser){}
+  void checkJam(String time, String idQrcode, String idUser, String lokasiDb){}
 }
 
 class PatrolPresenter implements PatrolPresenterAbstract {
   final PatrolModel _patrolModel = PatrolModel();
   late PatrolState _patrolState;
   ListCheckPointService _listCheckPointService = ListCheckPointService();
-  late bool _serviceEnabled;
-  late PermissionStatus _permissionGranted;
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  bool positionStreamStarted = false;
+  late bool serviceEnabled;
+  late LocationPermission permission;
+  // late bool _serviceEnabled;
+  // late PermissionStatus _permissionGranted;
 
   @override
   set view(PatrolState view) {
@@ -55,7 +62,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
           tagid: element.tagid.toString(),
           statusLokasi: element.statusLokasi.toString(),
           jam: element.createdAt.toString(),
-
+          lokasiDb: element.lokasiDb.toString() + "${Random().nextInt(999) + 100}",
         ));
        });
        _patrolModel.isloading = false;
@@ -69,11 +76,11 @@ class PatrolPresenter implements PatrolPresenterAbstract {
   }
 
   @override
-  void checkKondisi(BuildContext context, String idTag, String hasilQr) {
+  void checkKondisi(BuildContext context, String idTag, String hasilQr, lokasiDb) {
     _patrolModel.hasilQr = hasilQr;
     _patrolModel.idTags = idTag;
     _patrolState.refreshData(_patrolModel);
-    _patrolState.showStatusLokasi(context);
+    _patrolState.showStatusLokasi(context, lokasiDb);
   }
 
   @override
@@ -136,7 +143,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
   }
 
   @override
-  void checkEmpty(String tagId) {
+  void checkEmpty(String tagId, String lokasiDb) {
     print('==id=='+tagId);
     _patrolModel.isloading = true;
     _patrolState.refreshData(_patrolModel);
@@ -148,7 +155,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
         _patrolState.refreshData(_patrolModel);
       }else{
         print('mulai scan 1');
-        _patrolState.scan(tagId);
+        _patrolState.scan(tagId, lokasiDb);
         _patrolModel.isloading = false;
         _patrolState.refreshData(_patrolModel);
       }
@@ -199,20 +206,38 @@ class PatrolPresenter implements PatrolPresenterAbstract {
   }
 
     @override
-  Future<void> getUserLocation(BuildContext context) async {
+  Future<void> getUserLocation(BuildContext context, String lokasiDb) async {
     _patrolModel.isloading = true;
     _patrolState.refreshData(_patrolModel);
-
-
-
-    final _locationData = await getLocation();
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        _patrolState.onError('izin lokasi ditolak');
+        _patrolModel.isloading = false;
+        _patrolState.refreshData(_patrolModel);
+        // return Future.error('Location permissions are denied');
+      }
+    }else{
+      final _locationData = await _geolocatorPlatform.getCurrentPosition(
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 5,
+        ),
+      );
     _patrolModel.latitude = _locationData.latitude;
     _patrolModel.longitude = _locationData.longitude;
     _patrolModel.isloading = false;
     _patrolModel.location = true;
     _patrolState.refreshData(_patrolModel);
     _patrolState.onSuccess("yey, Berhasil :D");
-    _patrolState.showStatusLokasi(context);
+    _patrolState.showStatusLokasi(context, lokasiDb);
+    }
     // setState(() {
     //   _userLocation = _locationData;
     // });
@@ -263,6 +288,8 @@ class PatrolPresenter implements PatrolPresenterAbstract {
           tagid: element.tagid.toString(),
           statusLokasi: element.statusLokasi.toString(),
           jam: element.createdAt.toString(),
+          lokasiDb:
+              element.lokasiDb.toString() + "${Random().nextInt(999) + 100}",
         ));
       });
       _patrolModel.isloading = false;
@@ -277,7 +304,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
   }
 
   @override
-  void checkJam(String time, String idQrcode, idUser) {
+  void checkJam(String time, String idQrcode, idUser, String lokasiDb) {
     _patrolModel.isloading = true;
     _patrolState.refreshData(_patrolModel);
     // print(time);
@@ -286,7 +313,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
     _listCheckPointService.checkTime(time, idUser).then((value) {
       _patrolModel.isloading = false;
       _patrolState.refreshData(_patrolModel);
-      _patrolState.scan(idQrcode);
+      _patrolState.scan(idQrcode, lokasiDb);
     }).onError((error, stackTrace) {
       _patrolModel.isloading = false;
       _patrolState.refreshData(_patrolModel);

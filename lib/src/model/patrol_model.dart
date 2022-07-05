@@ -12,6 +12,7 @@ class Patrol {
   String status;
   String statusLokasi;
   String jam;
+  String lokasiDb;
   Patrol(
       {
     required this.idQrcode,
@@ -25,6 +26,7 @@ class Patrol {
     required this.status,
     required this.statusLokasi,
     required this.jam,
+    required this.lokasiDb,
   });
 }
 

@@ -1,10 +1,11 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gms_mobile/src/model/absen_model.dart';
 
 import '../state/absen_state.dart';
-import 'package:location/location.dart';
+import 'dart:async';
 
 abstract class AbsenPresenterAbstract {
   set view(AbsenState view) {}
@@ -18,8 +19,8 @@ abstract class AbsenPresenterAbstract {
 class AbsenPresenter implements AbsenPresenterAbstract {
   final AbsenModel _absenModel = AbsenModel();
   late AbsenState _absenState;
-  late bool _serviceEnabled;
-  late PermissionStatus _permissionGranted;
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  bool positionStreamStarted = false;
   
   
   @override
@@ -59,7 +60,12 @@ class AbsenPresenter implements AbsenPresenterAbstract {
     _absenState.refreshData(_absenModel);
     
 
-    final _locationData = await getLocation();
+    final _locationData = await _geolocatorPlatform.getCurrentPosition(
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5,
+      ),
+    );
       _absenModel.latitude = _locationData.latitude;
       _absenModel.longitude = _locationData.longitude;
       _absenModel.isloading = false;
