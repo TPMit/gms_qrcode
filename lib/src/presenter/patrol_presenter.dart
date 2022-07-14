@@ -61,6 +61,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
           status: element.status.toString(),
           tagid: element.tagid.toString(),
           statusLokasi: element.statusLokasi.toString(),
+          lokasiUrutan: element.lokasiUrutan.toString(),
           jam: element.createdAt.toString(),
           lokasiDb: element.lokasiDb.toString() + "${Random().nextInt(999) + 100}",
         ));
@@ -287,6 +288,7 @@ class PatrolPresenter implements PatrolPresenterAbstract {
           status: element.status.toString(),
           tagid: element.tagid.toString(),
           statusLokasi: element.statusLokasi.toString(),
+          lokasiUrutan: element.lokasiUrutan.toString(),
           jam: element.createdAt.toString(),
           lokasiDb:
               element.lokasiDb.toString() + "${Random().nextInt(999) + 100}",

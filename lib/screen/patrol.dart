@@ -135,8 +135,21 @@ class _PatrolScreenState extends State<PatrolScreen>
                               backgroundColor: Colors.grey,
                               textColor: Colors.white,
                               fontSize: 15)
-                            : scan(_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].lokasiDb.toString());
-                              // : _patrolPresenter.checkJam(now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser);
+                            : _patrolModel.patrol[itemIndex].lokasiUrutan != _patrolModel.patrol[itemIndex].label
+                            ? Fluttertoast.showToast(
+                                                msg: 'Checkpoint pos harus urut',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 2,
+                                                backgroundColor: Colors.grey,
+                                                textColor: Colors.white,
+                                                fontSize: 15)
+                              : _patrolPresenter.checkJam(
+                                                now.hour.toString() + ":"+ now.minute.toString(),_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].idUser,
+                                                _patrolModel
+                                                    .patrol[itemIndex].lokasiDb
+                                                    .toString());
+                            // : scan(_patrolModel.patrol[itemIndex].idQrcode, _patrolModel.patrol[itemIndex].lokasiDb.toString());
                           },
                           child: Container(
                               margin: const EdgeInsets.all(20),

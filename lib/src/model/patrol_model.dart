@@ -11,6 +11,7 @@ class Patrol {
   String latitudeLongitude;
   String status;
   String statusLokasi;
+  String lokasiUrutan;
   String jam;
   String lokasiDb;
   Patrol(
@@ -25,6 +26,7 @@ class Patrol {
     required this.latitudeLongitude,
     required this.status,
     required this.statusLokasi,
+    required this.lokasiUrutan,
     required this.jam,
     required this.lokasiDb,
   });
