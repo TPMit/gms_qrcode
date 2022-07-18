@@ -12,15 +12,27 @@ class ActivityServices {
   Client _client = new Client();
   // ignore: missing_return
   Future<ActivityResponse> getData() async {
-    final response = await _client.get(Uri.parse(
-        "https://gmsqr.tpm-security.com/attendance/addactivities"));
-        print(response.body);
-    if (response.statusCode == 200) {
+    try{
+      final response = await _client.get(
+          Uri.parse("https://gmsnv.mindotek.com/rest/listactivitiesidsite"));
+      print(response.body);
+      if (response.statusCode == 200) {
         ActivityResponse activityResponse =
             ActivityResponse.fromJson(json.decode(response.body));
         return activityResponse;
-    } else {
-      return Future.error("data kosong 🤷‍♂️");
+      } else {
+        return Future.error("data kosong 🤷‍♂️");
+      }
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
     }
   }
   // Future<List<AcitivityResponse>> getData(String idsite) async {

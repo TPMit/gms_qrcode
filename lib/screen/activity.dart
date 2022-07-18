@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gms_mobile/screen/fragment/loading.dart';
 import 'package:gms_mobile/src/model/activity_model.dart';
@@ -51,176 +52,192 @@ class _ActivitiesState extends State<Activities> implements ActivityState {
   Widget build(BuildContext context) {
     return _activityModel.isloading
         ? Loading()
-        : Scaffold(
-      floatingActionButton: FloatingActionButton(
-          child: Text("refresh"), 
-          onPressed: () {
-            setState(() {
-            _activityModel.activity.clear();
-            _activityPresenter.getData();
-            });
-           },
-        ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: double.infinity,
-        child: Column(
-          children: [
-            Container(
-                padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, "/home");
-                      },
-                      child: Icon(LineIcons.arrowLeft),
-                    ),
-                    Text(
-                      'Aktivitas',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => const AddActivityScreen());
+        : SafeArea(
+          child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+            child: Text("refresh"), 
+            onPressed: () {
+              setState(() {
+              _activityModel.activity.clear();
+              _activityPresenter.getData();
+              });
+             },
+          ),
+              body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                  padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/home");
                         },
-                        icon: const FaIcon(FontAwesomeIcons.plus))
-                  ],
-                )),
-                SizedBox(height: 5,),
-            this._activityModel.activity.length == 0
-                ? Container(
-                    child: Center(
-                    child: Text('Belum Ada Aktivitas Yang Dikerjakan',
-                        style: GoogleFonts.poppins(
-                          fontStyle: FontStyle.italic,
-                          textStyle:
-                              TextStyle(fontSize: 14, color: Color(0xff1f1f1f)),
-                        )),
-                  ))
-                : Expanded(
-                    child: Container(
-                    padding: EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width,
-                    height: double.infinity,
-                    color: Color(0xffecedf2),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                                    itemCount:
-                                        this._activityModel.activity.length,
-                                    scrollDirection: Axis.vertical,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder:
-                                        (BuildContext context, int itemIndex) =>
-                                            InkWell(
-                                      onTap: () {
-                                       showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  DialogActivityDetail(
-                                                    image: _activityModel
-                                                        .activity[itemIndex].images,
-                                                    name: _activityModel
-                                                        .activity[itemIndex]
-                                                        .name + ' - ' +_activityModel
-                                                        .activity[itemIndex]
-                                                        .dateTime,
-                                                    activity: _activityModel
-                                                        .activity[itemIndex]
-                                                        .activity,
-                                                    jam: _activityModel.activity[itemIndex].dateTime
-                                                  ));
-                                      },
-                                      child: Container(
-                                        height: 100,
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5.0),
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            new Icon(
-                                              Ionicons.calendar_outline,
-                                              size: 48,
-                                              color: Color(0xff485460),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                AutoSizeText(
-                                                  _activityModel
+                        child: Icon(LineIcons.arrowLeft),
+                      ),
+                      Text(
+                        'Aktivitas',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => const AddActivityScreen());
+                          },
+                          icon: const FaIcon(FontAwesomeIcons.plus))
+                    ],
+                  )),
+                  SizedBox(height: 5,),
+              this._activityModel.activity.length == 0
+                  ? Container(
+                      child: Center(
+                      child: Text('Belum Ada Aktivitas Yang Dikerjakan',
+                          style: GoogleFonts.poppins(
+                            fontStyle: FontStyle.italic,
+                            textStyle:
+                                TextStyle(fontSize: 14, color: Color(0xff1f1f1f)),
+                          )),
+                    ))
+                  : Expanded(
+                      child: Container(
+                      padding: EdgeInsets.all(20),
+                      width: MediaQuery.of(context).size.width,
+                      height: double.infinity,
+                      color: Color(0xffecedf2),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.builder(
+                                      itemCount:
+                                          this._activityModel.activity.length,
+                                      scrollDirection: Axis.vertical,
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int itemIndex) =>
+                                              InkWell(
+                                        onTap: () {
+                                         showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    DialogActivityDetail(
+                                                      image: _activityModel
+                                                          .activity[itemIndex].images,
+                                                      name: _activityModel
                                                           .activity[itemIndex]
-                                                          .name + ' : ' + _activityModel
-                                                          .activity[itemIndex]
-                                                          .activity +
-                                                      '\n' +
-                                                      _activityModel
+                                                          .name + ' - ' +_activityModel
                                                           .activity[itemIndex]
                                                           .dateTime,
-                                                  style: GoogleFonts.poppins(
-                                                    textStyle: TextStyle(
-                                                        fontSize: 14,
-                                                        color:
-                                                            Color(0xff1f1f1f)),
+                                                      activity: _activityModel
+                                                          .activity[itemIndex]
+                                                          .activity,
+                                                      jam: _activityModel.activity[itemIndex].dateTime
+                                                    ));
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 5.0),
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              new Icon(
+                                                Ionicons.calendar_outline,
+                                                size: 48,
+                                                color: Color(0xff485460),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  AutoSizeText(
+                                                    _activityModel
+                                                            .activity[itemIndex]
+                                                            .name + ' : ' + _activityModel
+                                                            .activity[itemIndex]
+                                                            .activity +
+                                                        '\n' +
+                                                        _activityModel
+                                                            .activity[itemIndex]
+                                                            .dateTime,
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle: TextStyle(
+                                                          fontSize: 14,
+                                                          color:
+                                                              Color(0xff1f1f1f)),
+                                                    ),
+                                                    maxLines: 2,
                                                   ),
-                                                  maxLines: 2,
-                                                ),
-                                                SizedBox(
-                                                  height: 4,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Icon(
-                                              Ionicons.chevron_forward,
-                                              size: 24,
-                                              color: Color(0xffe5e5e5),
-                                            )
-                                          ],
+                                                  SizedBox(
+                                                    height: 4,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Icon(
+                                                Ionicons.chevron_forward,
+                                                size: 24,
+                                                color: Color(0xffe5e5e5),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )),
-          ],
-        ),
-      ),
-    );
+                    )),
+            ],
+          ),
+              ),
+            ),
+        );
   }
 
   @override
   void onError(String error) {
-    
+    Fluttertoast.showToast(
+        msg: error,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 15);
   }
 
   @override
   void onSuccess(String success) {
-    
+    Fluttertoast.showToast(
+        msg: success,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 15);
   }
 
   @override

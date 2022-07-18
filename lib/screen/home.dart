@@ -227,14 +227,14 @@ class _HomeState extends State<Home> implements HomeState {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 FaIcon(
-                                                  FontAwesomeIcons.userClock,
+                                                  FontAwesomeIcons.userAlt,
                                                   color: Colors.teal,
                                                 ),
                                                 SizedBox(
                                                   height: 3,
                                                 ),
                                                 Text(
-                                                  'Ganti Sesi',
+                                                  'absen user\n lain',
                                                   style: TextStyle(
                                                       fontSize: 10,
                                                       color: Colors.black45),

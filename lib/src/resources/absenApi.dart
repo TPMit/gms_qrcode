@@ -42,6 +42,31 @@ class ListAbsenService {
     }
   }
 
+  static Future<List<ListAbsenModel>> getAll(String param) async {
+    print('get list absen');
+    try {
+      print("idniknya $param");
+      final response = await http.get(Uri.parse(
+          "https://gmsnv.mindotek.com/attendance/listabsenidsiteAll/"));
+      if (200 == response.statusCode) {
+        final List<ListAbsenModel> data = listAbsenModelFromJson(response.body);
+        return data;
+      } else {
+        return Future.error("Yah, data gak nemu 😑");
+      }
+    } on SocketException {
+      return Future.error("Yah, Internet Kamu error!😑");
+    } on HttpException {
+      print("Fungsi post ga nemu 😱");
+      // return Future.error("Fungsi post ga nemu 😱");
+      return Future.error("terjadi error");
+    } on FormatException {
+      print("Response format kacauu! 👎");
+      // return Future.error("Response format kacauu! 👎");
+      return Future.error("terjadi error");
+    }
+  }
+
   static Future<List<ListMemberModel>> getMember(String param) async {
     try {
       print(param);
